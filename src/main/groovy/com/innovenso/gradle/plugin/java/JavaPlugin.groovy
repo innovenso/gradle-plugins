@@ -13,7 +13,7 @@ class JavaPlugin implements Plugin<Project> {
 		project.plugins.apply('idea')
 		project.plugins.apply('jacoco')
 		project.plugins.apply('io.freefair.lombok')
-		project.plugins.apply('com.diffplug.gradle.spotless')
+		project.plugins.apply('com.diffplug.spotless')
 
 		project.sourceCompatibility = project.innovensoJava.sourceCompatibility
 		project.targetCompatibility = project.innovensoJava.targetCompatibility
