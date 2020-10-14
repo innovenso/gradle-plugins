@@ -3,7 +3,7 @@ plugins {
     id 'groovy'
     id "com.jfrog.artifactory" version "4.17.2"
     id 'maven-publish'
-    id "com.diffplug.gradle.spotless" version "3.26.1"
+    id "com.diffplug.spotless"
 }
 
 group 'com.innovenso.gradle'
@@ -19,6 +19,10 @@ apply plugin: com.innovenso.gradle.plugin.version.VersioningPlugin
          versionPlugin {
              id = 'com.innovenso.version'
              implementationClass = 'com.innovenso.gradle.plugin.version.VersioningPlugin'
+         }
+         javaPlugin {
+             id = 'com.innovenso.java'
+             implementationClass = 'com.innovenso.gradle.plugin.java.JavaPlugin'
          }
      }
  }
