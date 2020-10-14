@@ -1,8 +1,6 @@
 plugins {
     id 'groovy-gradle-plugin'
     id 'groovy'
-    id "com.jfrog.artifactory" version "4.17.2"
-    id 'maven-publish'
     id "com.diffplug.spotless"
 }
 
@@ -13,6 +11,7 @@ targetCompatibility = '1.11'
 
 apply from: 'dependencies.gradle'
 apply plugin: com.innovenso.gradle.plugin.version.VersioningPlugin
+apply plugin: com.innovenso.gradle.plugin.publish.PublishPlugin
 
  gradlePlugin {
      plugins {
@@ -24,41 +23,12 @@ apply plugin: com.innovenso.gradle.plugin.version.VersioningPlugin
              id = 'com.innovenso.java'
              implementationClass = 'com.innovenso.gradle.plugin.java.JavaPlugin'
          }
+         publishPlugin {
+             id = 'com.innovenso.publish'
+             implementationClass = 'com.innovenso.gradle.plugin.publish.PublishPlugin'
+         }
      }
  }
-
-publishing {
-    publications {
-        pluginPublication (MavenPublication) {
-            from components.java
-        }
-    }
-}
-
-artifactory {
-    contextUrl = System.getenv("ARTIFACTORY_CONTEXTURL")
-    publish {
-        repository {
-            repoKey = 'innovenso'
-            username = System.getenv("ARTIFACTORY_USERNAME")
-            password = System.getenv("ARTIFACTORY_PASSWORD")
-            maven = true
-        }
-        defaults {
-            publications ('pluginPublication')
-        }
-    }
-    resolve {
-        repository {
-            repoKey = 'repo'
-            username = System.getenv("ARTIFACTORY_USERNAME")
-            password = System.getenv("ARTIFACTORY_PASSWORD")
-            maven = true
-        }
-    }
-}
-
-publish.dependsOn(artifactoryPublish)
 
 spotless {
     java {
