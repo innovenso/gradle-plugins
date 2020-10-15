@@ -10,6 +10,7 @@ class JavaPlugin implements Plugin<Project> {
 		project.extensions.create("innovensoJava", JavaPluginExtension)
 
 		project.plugins.apply('java-library')
+		project.plugins.apply('groovy')
 		project.plugins.apply('idea')
 		project.plugins.apply('jacoco')
 		project.plugins.apply('io.freefair.lombok')
@@ -42,7 +43,6 @@ class JavaPlugin implements Plugin<Project> {
 		project.dependencies {
 			implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.12.1'
 			implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.12.1'
-			testImplementation "org.codehaus.groovy:groovy:3.0.4"
 			testImplementation "org.spockframework:spock-core:2.0-M3-groovy-3.0"
 		}
 
