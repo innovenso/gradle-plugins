@@ -42,8 +42,8 @@ class JavaPlugin implements Plugin<Project> {
 		project.dependencies {
 			implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.12.1'
 			implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.12.1'
-			testImplementation "org.codehaus.groovy:groovy:2.5.8"
-			testImplementation "org.spockframework:spock-core:1.3-groovy-2.5"
+			testImplementation "org.codehaus.groovy:groovy:3.0.4"
+			testImplementation "org.spockframework:spock-core:2.0-M3-groovy-3.0"
 		}
 
 		project.lombok {
