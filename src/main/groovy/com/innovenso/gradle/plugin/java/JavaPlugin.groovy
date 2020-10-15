@@ -61,5 +61,9 @@ class JavaPlugin implements Plugin<Project> {
 				greclipse()
 			}
 		}
+
+		project.test {
+			useJUnitPlatform()
+		}
 	}
 }
