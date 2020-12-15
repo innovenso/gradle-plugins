@@ -12,7 +12,7 @@ class JavaPlugin implements Plugin<Project> {
 		project.plugins.apply('java-library')
 		project.plugins.apply('groovy')
 		project.plugins.apply('idea')
-		project.plugins.apply('jacoco')
+		//		project.plugins.apply('jacoco')
 		project.plugins.apply('io.freefair.lombok')
 		project.plugins.apply('com.diffplug.spotless')
 
