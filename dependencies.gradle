@@ -19,5 +19,7 @@ dependencies {
     implementation 'io.freefair.gradle:lombok-plugin:5.2.1'
     implementation 'com.diffplug.spotless:spotless-plugin-gradle:5.6.1'
     implementation 'org.jfrog.buildinfo:build-info-extractor-gradle:4.17.2'
+    implementation 'org.springframework.boot:spring-boot-gradle-plugin:2.4.1'
+    implementation 'io.spring.dependency-management:io.spring.dependency-management.gradle.plugin:1.0.10.RELEASE'
     testImplementation group: 'junit', name: 'junit', version: '4.12'
 }
