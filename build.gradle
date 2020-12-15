@@ -27,6 +27,14 @@ apply plugin: com.innovenso.gradle.plugin.publish.PublishPlugin
              id = 'com.innovenso.publish'
              implementationClass = 'com.innovenso.gradle.plugin.publish.PublishPlugin'
          }
+         springPlugin {
+             id = 'com.innovenso.spring'
+             implementationClass = 'com.innovenso.gradle.plugin.spring.SpringBootPlugin'
+         }
+         dockerPlugin {
+             id = 'com.innovenso.docker'
+             implementationClass = 'com.innovenso.gradle.plugin.docker.DockerPlugin'
+         }
      }
  }
 
