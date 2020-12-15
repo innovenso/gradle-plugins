@@ -6,7 +6,7 @@ import org.gradle.api.Project
 class SpringBootPlugin implements Plugin<Project> {
 	@Override
 	void apply(Project project) {
-		project.extensions.create("innovensoSpring", SpringBootPluginExtension)
+		def innovensoSpring = project.extensions.create("innovensoSpring", SpringBootPluginExtension)
 
 		project.plugins.apply('org.springframework.boot')
 		project.plugins.apply('io.spring.dependency-management')
@@ -18,7 +18,7 @@ class SpringBootPlugin implements Plugin<Project> {
 		}
 
 		project.bootJar {
-			enabled = project.innovensoSpring.bootJarEnabled
+			enabled = innovensoSpring.bootJarEnabled
 		}
 
 		project.dependencies {

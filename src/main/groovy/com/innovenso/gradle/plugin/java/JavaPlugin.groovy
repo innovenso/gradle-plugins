@@ -7,7 +7,7 @@ import org.gradle.api.logging.LogLevel
 class JavaPlugin implements Plugin<Project> {
 	@Override
 	void apply(Project project) {
-		project.extensions.create("innovensoJava", JavaPluginExtension)
+		def innovensoJava = project.extensions.create("innovensoJava", JavaPluginExtension)
 
 		project.plugins.apply('java-library')
 		project.plugins.apply('groovy')
@@ -16,8 +16,8 @@ class JavaPlugin implements Plugin<Project> {
 		project.plugins.apply('io.freefair.lombok')
 		project.plugins.apply('com.diffplug.spotless')
 
-		project.sourceCompatibility = project.innovensoJava.sourceCompatibility
-		project.targetCompatibility = project.innovensoJava.targetCompatibility
+		project.sourceCompatibility = innovensoJava.sourceCompatibility
+		project.targetCompatibility = innovensoJava.targetCompatibility
 
 		project.repositories {
 			mavenCentral()
