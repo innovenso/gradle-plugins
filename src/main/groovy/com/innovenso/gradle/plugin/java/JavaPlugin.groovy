@@ -7,7 +7,7 @@ import org.gradle.api.Project
 class JavaPlugin implements Plugin<Project> {
 	@Override
 	void apply(Project project) {
-		def innovensoJava = project.extensions.create("innovensoJava", JavaPluginExtension)
+		project.extensions.create("innovensoJava", JavaPluginExtension)
 
 		project.plugins.apply('java-library')
 		project.plugins.apply('groovy')
@@ -64,11 +64,12 @@ class JavaPlugin implements Plugin<Project> {
 		}
 
 		project.afterEvaluate {
-			project.sourceCompatibility = innovensoJava.sourceCompatibility
-			project.targetCompatibility = innovensoJava.targetCompatibility
+			project.sourceCompatibility = project.innovensoJava.sourceCompatibility
+			project.targetCompatibility = project.innovensoJava.targetCompatibility
+			def basePackage = project.innovensoJava.basePackage ?: "${project.group}"
+			def basePackageDir = basePackage.replaceAll('.', '/')
 
 			project.task("initJava") {
-				def basePackageDir = innovensoJava.basePackage.replaceAll('.', '/')
 				project.mkdir "src/main/java/$basePackageDir"
 				project.mkdir 'src/main/resources'
 				project.mkdir "src/test/groovy/$basePackageDir"
@@ -76,13 +77,12 @@ class JavaPlugin implements Plugin<Project> {
 
 				copyTemplate('gitignore', project.file('.gitignore'))
 				copyTemplate('log4j2.xml', project.file('src/test/resources/log4j2.xml'))
+				copyTemplate( 'bitbucket.pipeline', project.file('bitbucket-pipelines.yml'))
 			}
 		}
-
-
 	}
 
-	private static void copyTemplate(String source, File target) {
+	private void copyTemplate(String source, File target) {
 		final URL templateResource = this.getClass().getClassLoader().getResource("templates/" + source)
 		FileUtils.copyURLToFile(templateResource, target);
 	}
