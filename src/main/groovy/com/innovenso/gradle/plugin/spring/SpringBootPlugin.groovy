@@ -17,13 +17,15 @@ class SpringBootPlugin implements Plugin<Project> {
 			}
 		}
 
-		project.bootJar {
-			enabled = innovensoSpring.bootJarEnabled
-		}
-
 		project.dependencies {
 			api 'org.springframework.boot:spring-boot-starter'
 			api 'org.springframework.boot:spring-boot-starter-log4j2'
+		}
+
+		project.afterEvaluate {
+			project.bootJar {
+				enabled = innovensoSpring.bootJarEnabled
+			}
 		}
 	}
 }
