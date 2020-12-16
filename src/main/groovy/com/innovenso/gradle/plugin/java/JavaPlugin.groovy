@@ -1,8 +1,8 @@
 package com.innovenso.gradle.plugin.java
 
+import org.apache.commons.io.FileUtils
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.logging.LogLevel
 
 class JavaPlugin implements Plugin<Project> {
 	@Override
@@ -66,8 +66,24 @@ class JavaPlugin implements Plugin<Project> {
 		project.afterEvaluate {
 			project.sourceCompatibility = innovensoJava.sourceCompatibility
 			project.targetCompatibility = innovensoJava.targetCompatibility
+
+			project.task("initJava") {
+				def basePackageDir = innovensoJava.basePackage.replaceAll('.', '/')
+				project.mkdir "src/main/java/$basePackageDir"
+				project.mkdir 'src/main/resources'
+				project.mkdir "src/test/groovy/$basePackageDir"
+				project.mkdir 'src/test/resources'
+
+				copyTemplate('gitignore', project.file('.gitignore'))
+				copyTemplate('log4j2.xml', project.file('src/test/resources/log4j2.xml'))
+			}
 		}
 
 
+	}
+
+	private static void copyTemplate(String source, File target) {
+		final URL templateResource = this.getClass().getClassLoader().getResource("templates/" + source)
+		FileUtils.copyURLToFile(templateResource, target);
 	}
 }
