@@ -16,9 +16,6 @@ class JavaPlugin implements Plugin<Project> {
 		project.plugins.apply('io.freefair.lombok')
 		project.plugins.apply('com.diffplug.spotless')
 
-		project.sourceCompatibility = innovensoJava.sourceCompatibility
-		project.targetCompatibility = innovensoJava.targetCompatibility
-
 		project.repositories {
 			mavenCentral()
 			jcenter()
@@ -65,5 +62,12 @@ class JavaPlugin implements Plugin<Project> {
 		project.test {
 			useJUnitPlatform()
 		}
+
+		project.afterEvaluate {
+			project.sourceCompatibility = innovensoJava.sourceCompatibility
+			project.targetCompatibility = innovensoJava.targetCompatibility
+		}
+
+
 	}
 }
