@@ -1,8 +1,8 @@
 package com.innovenso.gradle.plugin.java
 
+import org.apache.commons.io.FileUtils
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.logging.LogLevel
 
 class JavaPlugin implements Plugin<Project> {
 	@Override
@@ -15,9 +15,6 @@ class JavaPlugin implements Plugin<Project> {
 		//		project.plugins.apply('jacoco')
 		project.plugins.apply('io.freefair.lombok')
 		project.plugins.apply('com.diffplug.spotless')
-
-		project.sourceCompatibility = project.innovensoJava.sourceCompatibility
-		project.targetCompatibility = project.innovensoJava.targetCompatibility
 
 		project.repositories {
 			mavenCentral()
@@ -65,5 +62,28 @@ class JavaPlugin implements Plugin<Project> {
 		project.test {
 			useJUnitPlatform()
 		}
+
+		project.afterEvaluate {
+			project.sourceCompatibility = project.innovensoJava.sourceCompatibility
+			project.targetCompatibility = project.innovensoJava.targetCompatibility
+			def basePackage = project.innovensoJava.basePackage ?: "${project.group}"
+			def basePackageDir = basePackage.replaceAll('.', '/')
+
+			project.task("initJava") {
+				project.mkdir "src/main/java/$basePackageDir"
+				project.mkdir 'src/main/resources'
+				project.mkdir "src/test/groovy/$basePackageDir"
+				project.mkdir 'src/test/resources'
+
+				copyTemplate('gitignore', project.file('.gitignore'))
+				copyTemplate('log4j2.xml', project.file('src/test/resources/log4j2.xml'))
+				copyTemplate( 'bitbucket.pipeline', project.file('bitbucket-pipelines.yml'))
+			}
+		}
+	}
+
+	private void copyTemplate(String source, File target) {
+		final URL templateResource = this.getClass().getClassLoader().getResource("templates/" + source)
+		FileUtils.copyURLToFile(templateResource, target);
 	}
 }
