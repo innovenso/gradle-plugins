@@ -63,7 +63,7 @@ class DockerPlugin implements Plugin<Project> {
 		}
 	}
 
-	private List<String> getPushCommandLine(Project project, String tag, String version, boolean isVctl) {
+	private List<String> getPushCommandLine(Project project, String tag, Object version, boolean isVctl) {
 		if (project.innovensoDocker.target == 'ecr') {
 			isVctl ? getVctlPushToEcrCommandLine(tag, version) : getDockerPushToEcrCommandLine(tag, version)
 		} else {
@@ -71,7 +71,7 @@ class DockerPlugin implements Plugin<Project> {
 		}
 	}
 
-	private List<String> getVctlPushToDockerCommandLine(String tag, String version) {
+	private List<String> getVctlPushToDockerCommandLine(String tag, Object version) {
 		[
 			'vctl',
 			'push',
@@ -83,7 +83,7 @@ class DockerPlugin implements Plugin<Project> {
 		]
 	}
 
-	private List<String> getDockerPushToDockerCommandLine(String tag, String version) {
+	private List<String> getDockerPushToDockerCommandLine(String tag, Object version) {
 		[
 			'docker',
 			'push',
@@ -91,7 +91,7 @@ class DockerPlugin implements Plugin<Project> {
 		]
 	}
 
-	private List<String> getVctlPushToEcrCommandLine(String tag, String version) {
+	private List<String> getVctlPushToEcrCommandLine(String tag, Object version) {
 		[
 			'vctl',
 			'push',
@@ -103,7 +103,7 @@ class DockerPlugin implements Plugin<Project> {
 		]
 	}
 
-	private List<String> getDockerPushToEcrCommandLine(String tag, String version) {
+	private List<String> getDockerPushToEcrCommandLine(String tag, Object version) {
 		[
 			'docker',
 			'push',
