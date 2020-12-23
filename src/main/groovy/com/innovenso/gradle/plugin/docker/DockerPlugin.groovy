@@ -19,7 +19,7 @@ class DockerPlugin implements Plugin<Project> {
 			project.task(Map.of("type", Copy, "group", "Docker"), 'copyJar') {
 				from project.jar // here it automatically reads jar file produced from jar task
 				into project.buildDir
-				rename { filename -> innovensoDocker.jarFileName}
+				rename { filename -> project.innovensoDocker.jarFileName}
 			}
 
 			project.copyJar.dependsOn('jar')
@@ -47,12 +47,12 @@ class DockerPlugin implements Plugin<Project> {
 
 			project.task(Map.of("type", Exec, "group", "Docker"), 'vctlPush') {
 				workingDir "${project.projectDir}"
-				commandLine 'vctl', 'push', '-u', System.getenv('DOCKER_USERNAME'), '-p', System.getenv('DOCKER_PASSWORD'), "${tag}:${version}"
+				commandLine getPushCommandLine(project, tag, version, true)
 			}
 
 			project.task(Map.of("type", Exec, "group", "Docker"), 'dockerPush') {
 				workingDir "${project.projectDir}"
-				commandLine 'docker', 'push', "${tag}:${version}"
+				commandLine getPushCommandLine(project, tag, version, false)
 			}
 
 			project.task('vctl')
@@ -61,6 +61,54 @@ class DockerPlugin implements Plugin<Project> {
 			project.docker.dependsOn('dockerBuild', 'dockerTag', 'dockerPush')
 
 		}
+	}
+
+	private List<String> getPushCommandLine(Project project, String tag, String version, boolean isVctl) {
+		if (project.innovensoDocker.target == 'ecr') {
+			isVctl ? getVctlPushToEcrCommandLine(tag, version) : getDockerPushToEcrCommandLine(tag, version)
+		} else {
+			isVctl ? getVctlPushToDockerCommandLine(tag, version) : getDockerPushToDockerCommandLine(tag, version)
+		}
+	}
+
+	private List<String> getVctlPushToDockerCommandLine(String tag, String version) {
+		[
+			'vctl',
+			'push',
+			'-u',
+			System.getenv('DOCKER_USERNAME'),
+			'-p',
+			System.getenv('DOCKER_PASSWORD'),
+			"${tag}:${version}"
+		]
+	}
+
+	private List<String> getDockerPushToDockerCommandLine(String tag, String version) {
+		[
+			'docker',
+			'push',
+			"${tag}:${version}"
+		]
+	}
+
+	private List<String> getVctlPushToEcrCommandLine(String tag, String version) {
+		[
+			'vctl',
+			'push',
+			'-u',
+			System.getenv('DOCKER_USERNAME'),
+			'-p',
+			System.getenv('DOCKER_PASSWORD'),
+			"${tag}:${version}"
+		]
+	}
+
+	private List<String> getDockerPushToEcrCommandLine(String tag, String version) {
+		[
+			'docker',
+			'push',
+			"${tag}:${version}"
+		]
 	}
 
 	private void copyTemplate(String source, File target) {
