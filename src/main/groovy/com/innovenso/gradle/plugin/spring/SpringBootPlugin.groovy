@@ -11,15 +11,8 @@ class SpringBootPlugin implements Plugin<Project> {
 		project.plugins.apply('org.springframework.boot')
 		project.plugins.apply('io.spring.dependency-management')
 
-		project.configurations {
-			all.collect { configuration ->
-				configuration.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
-			}
-		}
-
 		project.dependencies {
 			api 'org.springframework.boot:spring-boot-starter'
-			api 'org.springframework.boot:spring-boot-starter-log4j2'
 		}
 
 		project.afterEvaluate {
