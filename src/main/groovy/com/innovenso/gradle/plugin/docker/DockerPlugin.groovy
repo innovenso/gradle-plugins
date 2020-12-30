@@ -55,8 +55,8 @@ class DockerPlugin implements Plugin<Project> {
 				commandLine 'docker', 'push', "${tag}:${version}"
 			}
 
-			project.task('vctl')
-			project.task('docker')
+			project.task(Map.of("group", "Docker"), 'vctl')
+			project.task(Map.of("group", "Docker"), 'docker')
 			project.vctl.dependsOn('vctlBuild', 'vctlTag', 'vctlPush')
 			project.docker.dependsOn('dockerBuild', 'dockerTag', 'dockerPush')
 
