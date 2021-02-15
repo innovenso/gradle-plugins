@@ -11,18 +11,11 @@ class PublishPlugin implements Plugin<Project> {
 	void apply(Project project) {
 		applyPlugins(project)
 
-		if(hasGradlePlugin(project)) {
-			applyGradlePublicationSource(project)
-		} else {
-			applyJavaPublicationSource(project)
-		}
-		applyPublicationRepositories(project)
-		applyTaskDependencies(project)
+		applyJavaPublicationSource(project)
 	}
 
 	void applyPlugins(Project project) {
 		project.plugins.apply('maven-publish')
-		project.plugins.apply('com.jfrog.artifactory')
 	}
 
 	void applyJavaPublicationSource(Project project) {
@@ -33,51 +26,15 @@ class PublishPlugin implements Plugin<Project> {
 					from project.components.java
 				}
 			}
-		}
-	}
-
-	void applyGradlePublicationSource(Project project) {
-		println "applying gradle publication source"
-		project.publishing {
-			publications {
-				pluginPublication (MavenPublication) {
-					from project.components.java
+			repositories {
+				maven {
+					url 'https://innovenso-696563788450.d.codeartifact.eu-west-1.amazonaws.com/maven/innovenso/'
+					credentials {
+						username "aws"
+						password System.env.CODEARTIFACT_AUTH_TOKEN
+					}
 				}
 			}
 		}
-	}
-
-	boolean hasGradlePlugin(Project project) {
-		project.plugins.hasPlugin('groovy-gradle-plugin') || project.plugins.hasPlugin('java-gradle-plugin')
-	}
-
-	void applyPublicationRepositories(Project project) {
-		project.artifactory {
-			contextUrl = System.getenv('ARTIFACTORY_CONTEXTURL')   //The base Artifactory URL if not overridden by the publisher/resolver
-			publish {
-				repository {
-					repoKey = 'innovenso'
-					username = System.getenv("ARTIFACTORY_USERNAME")
-					password = System.getenv("ARTIFACTORY_PASSWORD")
-					maven = true
-				}
-				defaults {
-					publications('mavenJava', 'pluginPublication')
-				}
-			}
-			resolve {
-				repository {
-					repoKey = 'repo'
-					username = System.getenv("ARTIFACTORY_USERNAME")
-					password = System.getenv("ARTIFACTORY_PASSWORD")
-					maven = true
-
-				}
-			}
-		}
-	}
-
-	void applyTaskDependencies(Project project) {
-		project.publish.dependsOn('artifactoryPublish')
 	}
 }
