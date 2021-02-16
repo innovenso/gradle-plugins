@@ -5,6 +5,7 @@ phases:
     commands:
       - echo Build started on `date`
       - export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain innovenso --query authorizationToken --output text --region eu-west-1`
+      - git fetch --all --tags
       - gradle clean build publish
   post_build:
     commands:
