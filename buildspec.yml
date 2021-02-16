@@ -1,18 +1,15 @@
 version: 0.2
 
+env:
+  git-credential-helper: yes
 phases:
-  install:
-    runtime-versions:
-      java: corretto11
-  pre_build:
-    commands:
-      - echo Installing AWS CLI
-      - pip3 install awscli --upgrade --user
   build:
     commands:
       - echo Build started on `date`
       - export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain innovenso --query authorizationToken --output text --region eu-west-1`
-      - bash ./gradlew clean build publish
+      - git fetch --all --tags
+      - git checkout master 
+      - gradle clean build publish
   post_build:
     commands:
       - echo Build completed on `date`
