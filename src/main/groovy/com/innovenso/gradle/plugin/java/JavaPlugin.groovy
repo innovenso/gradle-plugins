@@ -21,10 +21,10 @@ class JavaPlugin implements Plugin<Project> {
 			jcenter()
 			mavenLocal()
 			maven {
-				url 'https://innovenso.jfrog.io/artifactory/repo/'
+				url 'https://innovenso-696563788450.d.codeartifact.eu-west-1.amazonaws.com/maven/innovenso/'
 				credentials {
-					username = System.getenv("ARTIFACTORY_USERNAME")
-					password = System.getenv("ARTIFACTORY_PASSWORD")
+					username "aws"
+					password System.env.CODEARTIFACT_AUTH_TOKEN
 				}
 			}
 		}
