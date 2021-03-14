@@ -73,10 +73,6 @@ class JavaPlugin implements Plugin<Project> {
 				project.mkdir 'src/main/resources'
 				project.mkdir "src/test/groovy/$basePackageDir"
 				project.mkdir 'src/test/resources'
-
-				copyTemplate('gitignore', project.file('.gitignore'))
-				copyTemplate('log4j2.xml', project.file('src/test/resources/log4j2.xml'))
-				copyTemplate( 'bitbucket.pipeline', project.file('bitbucket-pipelines.yml'))
 			}
 		}
 	}
