@@ -53,10 +53,11 @@ class PublishPlugin implements Plugin<Project> {
 	void applyPublicationRepositories(Project project) {
 		def	awsAccessKeyId = System.getenv('AWS_ACCESS_KEY_ID') ?: project.findProperty('aws_access_key_id')
 		def	awsSecretAccessKey = System.getenv('AWS_SECRET_ACCESS_KEY') ?: project.findProperty('aws_secret_access_key')
+		def s3DeployUrl = project.findProperty('maven_publish_bucket_url') ?: 's3://innovenso-io-website/maven/'
 
 		project.publishing.repositories {
 			maven {
-				url 's3://innovenso-io-website/maven/'
+				url s3DeployUrl
 				credentials(AwsCredentials) {
 					accessKey = awsAccessKeyId
 					secretKey = awsSecretAccessKey
