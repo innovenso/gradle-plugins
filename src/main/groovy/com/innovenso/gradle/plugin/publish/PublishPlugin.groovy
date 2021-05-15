@@ -2,6 +2,7 @@ package com.innovenso.gradle.plugin.publish
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.credentials.AwsCredentials
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.internal.publication.DefaultMavenPublication
 
@@ -50,12 +51,15 @@ class PublishPlugin implements Plugin<Project> {
 	}
 
 	void applyPublicationRepositories(Project project) {
+		def	awsAccessKeyId = System.getenv('AWS_ACCESS_KEY_ID') ?: project.findProperty('aws_access_key_id')
+		def	awsSecretAccessKey = System.getenv('AWS_SECRET_ACCESS_KEY') ?: project.findProperty('aws_secret_access_key')
+
 		project.publishing.repositories {
 			maven {
-				url 'https://innovenso-696563788450.d.codeartifact.eu-west-1.amazonaws.com/maven/innovenso/'
-				credentials {
-					username "aws"
-					password System.env.CODEARTIFACT_AUTH_TOKEN
+				url 's3://innovenso-io-website/maven/'
+				credentials(AwsCredentials) {
+					accessKey = awsAccessKeyId
+					secretKey = awsSecretAccessKey
 				}
 			}
 		}

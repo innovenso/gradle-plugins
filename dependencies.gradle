@@ -3,11 +3,7 @@ repositories {
     mavenLocal()
     jcenter()
     maven {
-        url 'https://innovenso-696563788450.d.codeartifact.eu-west-1.amazonaws.com/maven/innovenso/'
-        credentials {
-            username "aws"
-            password System.env.CODEARTIFACT_AUTH_TOKEN
-        }
+        url 'https://download.innovenso.io/maven'
     }
     gradlePluginPortal()
 }

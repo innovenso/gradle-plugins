@@ -3,10 +3,14 @@ package com.innovenso.gradle.plugin.java
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.credentials.AwsCredentials
 
 class JavaPlugin implements Plugin<Project> {
 	@Override
 	void apply(Project project) {
+		def	awsAccessKeyId = System.getenv('AWS_ACCESS_KEY_ID') ?: project.findProperty('aws_access_key_id')
+		def	awsSecretAccessKey = System.getenv('AWS_SECRET_ACCESS_KEY') ?: project.findProperty('aws_secret_access_key')
+
 		project.extensions.create("innovensoJava", JavaPluginExtension)
 
 		project.plugins.apply('java-library')
@@ -21,11 +25,7 @@ class JavaPlugin implements Plugin<Project> {
 			jcenter()
 			mavenLocal()
 			maven {
-				url 'https://innovenso-696563788450.d.codeartifact.eu-west-1.amazonaws.com/maven/innovenso/'
-				credentials {
-					username "aws"
-					password System.env.CODEARTIFACT_AUTH_TOKEN
-				}
+				url 'https://download.innovenso.io/maven'
 			}
 		}
 
