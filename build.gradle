@@ -6,8 +6,8 @@ plugins {
 
 group 'com.innovenso.gradle'
 
-sourceCompatibility = '1.11'
-targetCompatibility = '1.11'
+sourceCompatibility = '1.17'
+targetCompatibility = '1.17'
 
 apply from: 'dependencies.gradle'
 apply plugin: com.innovenso.gradle.plugin.version.VersioningPlugin

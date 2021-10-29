@@ -1,4 +1,4 @@
-image: gradle:jdk14
+image: gradle:latest
 
 pipelines:
   default:
