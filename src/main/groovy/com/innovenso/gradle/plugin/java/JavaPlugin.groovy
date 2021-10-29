@@ -38,9 +38,9 @@ class JavaPlugin implements Plugin<Project> {
 
 
 		project.dependencies {
-			testImplementation "org.codehaus.groovy:groovy:3.0.7"
-			testImplementation "org.codehaus.groovy:groovy-json:3.0.7"
-			testImplementation "org.spockframework:spock-core:2.0-M4-groovy-3.0"
+			testImplementation "org.codehaus.groovy:groovy:3.0.9"
+			testImplementation "org.codehaus.groovy:groovy-json:3.0.9"
+			testImplementation "org.spockframework:spock-core:2.0-groovy-3.0"
 		}
 
 		project.lombok {
