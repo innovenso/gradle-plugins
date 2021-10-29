@@ -1,7 +1,0 @@
-image: gradle:jdk14
-
-pipelines:
-  default:
-    - step:
-        script:
-          - gradle clean build publish
