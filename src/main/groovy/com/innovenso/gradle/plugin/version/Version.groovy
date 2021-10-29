@@ -21,10 +21,10 @@ class Version {
 		this.classifier = classifier
 		this.versionType = versionType
 		if (versionType in [
-			Type.FEATURE,
-			Type.DEVELOPMENT,
-			Type.PRERELEASE
-		]) {
+					Type.FEATURE,
+					Type.DEVELOPMENT,
+					Type.PRERELEASE
+				]) {
 			this.minor = minorVersion + 1
 			this.patch = 0
 		} else if (versionType == Type.HOTFIX) {
@@ -46,10 +46,10 @@ class Version {
 
 		if (classifier) versionBuilder.append("-${classifier}")
 		if (versionType in [
-			Type.DEVELOPMENT,
-			Type.FEATURE,
-			Type.HOTFIX
-		]) versionBuilder.append("-SNAPSHOT")
+					Type.DEVELOPMENT,
+					Type.FEATURE,
+					Type.HOTFIX
+				]) versionBuilder.append("-SNAPSHOT")
 		return versionBuilder.toString()
 	}
 
