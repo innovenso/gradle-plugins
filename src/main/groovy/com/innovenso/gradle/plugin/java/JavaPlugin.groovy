@@ -51,7 +51,7 @@ class JavaPlugin implements Plugin<Project> {
 
 		project.spotless {
 			java {
-				googleJavaFormat()
+				eclipse()
 			}
 			groovy {
 				greclipse()
