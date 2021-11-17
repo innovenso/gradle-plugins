@@ -3,7 +3,8 @@ package com.innovenso.gradle.plugin.java
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.credentials.AwsCredentials
+import org.gradle.api.provider.Property
+import org.gradle.jvm.tasks.Jar
 
 class JavaPlugin implements Plugin<Project> {
 	@Override
@@ -22,7 +23,6 @@ class JavaPlugin implements Plugin<Project> {
 
 		project.repositories {
 			mavenCentral()
-			jcenter()
 			mavenLocal()
 			maven {
 				url 'https://download.innovenso.io/maven'
@@ -60,6 +60,11 @@ class JavaPlugin implements Plugin<Project> {
 
 		project.test {
 			useJUnitPlatform()
+		}
+
+		project.java {
+			withJavadocJar()
+			withSourcesJar()
 		}
 
 		project.afterEvaluate {
