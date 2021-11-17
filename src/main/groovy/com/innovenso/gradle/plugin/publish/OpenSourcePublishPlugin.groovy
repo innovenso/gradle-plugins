@@ -22,15 +22,6 @@ class OpenSourcePublishPlugin implements Plugin<Project> {
 			}
 
 			applyPublicationRepositories(project)
-
-			project.signing {
-				String signingKey = config.signingKey
-				String signingPassword = config.signingPassword
-				useInMemoryPgpKeys(signingKey, signingPassword)
-				if (project.publishing.publications.mavenJava) {
-					sign project.publishing.publications.mavenJava
-				}
-			}
 		}
 	}
 
@@ -40,6 +31,7 @@ class OpenSourcePublishPlugin implements Plugin<Project> {
 	}
 
 	void applyJavaPublicationSource(Project project) {
+		def config = project.extensions.getByName('publishOSS')
 		println "applying java publication source"
 		project.publishing {
 			publications {
@@ -49,16 +41,34 @@ class OpenSourcePublishPlugin implements Plugin<Project> {
 				}
 			}
 		}
+
+		project.signing {
+			String signingKey = config.signingKey
+			String signingPassword = config.signingPassword
+			useInMemoryPgpKeys(signingKey, signingPassword)
+			if (project.publishing.publications.mavenJava) {
+				sign project.publishing.publications.mavenJava
+			}
+		}
 	}
 
 	void applyGradlePublicationSource(Project project) {
+		def config = project.extensions.getByName('publishOSS')
 		println "applying gradle publication source"
 		project.publishing {
 			publications {
-				pluginPublication (MavenPublication) { publication ->
-					from project.components.java
+				pluginMaven (MavenPublication) { publication ->
 					applyPom(project, publication)
 				}
+			}
+		}
+
+		project.signing {
+			String signingKey = config.signingKey
+			String signingPassword = config.signingPassword
+			useInMemoryPgpKeys(signingKey, signingPassword)
+			if (project.publishing.publications.pluginMaven) {
+				sign project.publishing.publications.pluginMaven
 			}
 		}
 	}

@@ -1,4 +1,5 @@
 import com.innovenso.gradle.plugin.publish.AwsPublishPlugin
+import com.innovenso.gradle.plugin.publish.OpenSourcePublishPlugin
 import com.innovenso.gradle.plugin.version.VersioningPlugin
 
 plugins {
@@ -16,32 +17,44 @@ targetCompatibility = '1.17'
 
 apply from: 'dependencies.gradle'
 apply plugin: VersioningPlugin
-apply plugin: AwsPublishPlugin
+apply plugin: OpenSourcePublishPlugin
 
  gradlePlugin {
      plugins {
          versionPlugin {
-             id = 'com.innovenso.version'
+             id = 'com.innovenso.gradle.version'
+             displayName = 'Innovenso Versioning Plugin'
+             description = 'Uses Git branches and tags to generate a version number'
              implementationClass = 'com.innovenso.gradle.plugin.version.VersioningPlugin'
          }
          javaPlugin {
-             id = 'com.innovenso.java'
+             id = 'com.innovenso.gradle.java'
+             displayName = 'Innovenso Java Plugin'
+             description = 'Configures plugins and settings for every Innovenso project'
              implementationClass = 'com.innovenso.gradle.plugin.java.JavaPlugin'
          }
          awsPublishPlugin {
-             id = 'com.innovenso.publish'
+             id = 'com.innovenso.gradle.publish'
+             displayName = 'Innovenso AWS S3 Publish Plugin'
+             description = 'Publishes Maven artifacts to an AWS S3 Bucket'
              implementationClass = 'com.innovenso.gradle.plugin.publish.AwsPublishPlugin'
          }
          ossPublishPlugin {
-             id = 'com.innovenso.publish.oss'
+             id = 'com.innovenso.gradle.publish.oss'
+             displayName = 'Innovenso Open Source Repository Hosting Publish Plugin'
+             description = 'Publishes Maven artifacts to OSSRH, for publication in Maven Central'
              implementationClass = 'com.innovenso.gradle.plugin.publish.OpenSourcePublishPlugin'
          }
          springPlugin {
-             id = 'com.innovenso.spring'
+             id = 'com.innovenso.gradle.spring'
+             displayName = 'Innovenso Spring Plugin'
+             description = "Configures plugins and settings for every Innovenso Spring project"
              implementationClass = 'com.innovenso.gradle.plugin.spring.SpringBootPlugin'
          }
          dockerPlugin {
-             id = 'com.innovenso.docker'
+             id = 'com.innovenso.gradle.docker'
+             displayName = 'Innovenso Docker Plugin'
+             description = "Simple Docker plugin that supports VMWare vctl"
              implementationClass = 'com.innovenso.gradle.plugin.docker.DockerPlugin'
          }
      }
@@ -62,4 +75,15 @@ pluginBundle {
     tags = ['innovenso']
 }
 
-
+publishOSS {
+    projectUrl = 'https://innovenso.com'
+    scmUrl = 'scm:git:git@bitbucket.org:innovenso/innovenso-gradle-plugins.git'
+    scmDeveloperUrl = 'scm:git:git@bitbucket.org:innovenso/innovenso-gradle-plugins.git'
+    projectSourceUrl = 'https://bitbucket.org/innovenso/innovenso-gradle-plugins/'
+    license = 'GNU General Public License v3'
+    licenseUrl = 'https://www.gnu.org/licenses/gpl-3.0.txt'
+    maintainerName = 'Jurgen Lust'
+    maintainerId = 'jlust'
+    maintainerEmail = 'jurgen@innovenso.com'
+    description = 'Some very opinionated Gradle plugins for Innovenso projects'
+}
