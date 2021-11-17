@@ -56,13 +56,10 @@ spotless {
     }
 }
 
-
-
 pluginBundle {
     website = 'https://innovenso.com'
     vcsUrl = 'https://bitbucket.org/innovenso/innovenso-gradle-plugins/'
     tags = ['innovenso']
 }
-
 
 

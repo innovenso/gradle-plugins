@@ -43,8 +43,8 @@ class AwsPublishPlugin implements Plugin<Project> {
 		println "applying gradle publication source"
 		project.publishing {
 			publications {
-				pluginPublication (MavenPublication) { publication ->
-					from project.components.java
+				pluginMaven (MavenPublication) {
+					//artifact project.sourcesJar
 				}
 			}
 		}
