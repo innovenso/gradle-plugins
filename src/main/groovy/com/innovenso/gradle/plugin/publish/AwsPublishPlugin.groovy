@@ -2,14 +2,15 @@ package com.innovenso.gradle.plugin.publish
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.repositories.PasswordCredentials
 import org.gradle.api.credentials.AwsCredentials
 import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.api.publish.maven.internal.publication.DefaultMavenPublication
 
-class PublishPlugin implements Plugin<Project> {
+class AwsPublishPlugin implements Plugin<Project> {
 
 	@Override
 	void apply(Project project) {
+		project.extensions.create('publishAWS', AwsPublishPluginExtension)
 		applyPlugins(project)
 
 		if(hasGradlePlugin(project)) {
@@ -17,10 +18,13 @@ class PublishPlugin implements Plugin<Project> {
 		} else {
 			applyJavaPublicationSource(project)
 		}
-		applyPublicationRepositories(project)
+
+		project.afterEvaluate {
+			applyPublicationRepositories(project)
+		}
 	}
 
-	void applyPlugins(Project project) {
+	static void applyPlugins(Project project) {
 		project.plugins.apply('maven-publish')
 	}
 
@@ -28,7 +32,7 @@ class PublishPlugin implements Plugin<Project> {
 		println "applying java publication source"
 		project.publishing {
 			publications {
-				mavenJava(MavenPublication) {
+				mavenJava(MavenPublication) { publication ->
 					from project.components.java
 				}
 			}
@@ -39,22 +43,27 @@ class PublishPlugin implements Plugin<Project> {
 		println "applying gradle publication source"
 		project.publishing {
 			publications {
-				pluginPublication (MavenPublication) {
+				pluginPublication (MavenPublication) { publication ->
 					from project.components.java
 				}
 			}
 		}
 	}
 
-	boolean hasGradlePlugin(Project project) {
+	static boolean hasGradlePlugin(Project project) {
 		project.plugins.hasPlugin('groovy-gradle-plugin') || project.plugins.hasPlugin('java-gradle-plugin')
 	}
 
 	void applyPublicationRepositories(Project project) {
-		def	awsAccessKeyId = System.getenv('AWS_ACCESS_KEY_ID') ?: project.findProperty('aws_access_key_id')
-		def	awsSecretAccessKey = System.getenv('AWS_SECRET_ACCESS_KEY') ?: project.findProperty('aws_secret_access_key')
-		def s3DeployUrl = project.findProperty('maven_publish_bucket_url') ?: 's3://innovenso-io-website/maven/'
-
+		AwsPublishPluginExtension config = project.extensions.getByName('publishAWS') as AwsPublishPluginExtension
+		String awsAccessKeyId = config.awsAccessKeyId
+		String awsSecretAccessKey = config.awsSecretAccessKey
+		String bucket = config.awsS3Bucket
+		String folder = config.awsS3BucketFolder
+		if (!awsAccessKeyId || !awsSecretAccessKey || !bucket) {
+			project.logger.warn 'AWS Access Key, Secret Key or bucket name not configured, skipping AWS publication'
+		}
+		def s3DeployUrl = "s3://${bucket}/${folder}"
 		project.publishing.repositories {
 			maven {
 				url s3DeployUrl

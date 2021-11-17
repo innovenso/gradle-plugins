@@ -1,7 +1,12 @@
+import com.innovenso.gradle.plugin.publish.AwsPublishPlugin
+import com.innovenso.gradle.plugin.version.VersioningPlugin
+
 plugins {
     id 'groovy-gradle-plugin'
     id 'groovy'
-    id "com.diffplug.spotless"
+    id 'com.diffplug.spotless'
+    id 'maven-publish'
+    id 'com.gradle.plugin-publish' version '0.18.0'
 }
 
 group 'com.innovenso.gradle'
@@ -10,8 +15,8 @@ sourceCompatibility = '1.17'
 targetCompatibility = '1.17'
 
 apply from: 'dependencies.gradle'
-apply plugin: com.innovenso.gradle.plugin.version.VersioningPlugin
-apply plugin: com.innovenso.gradle.plugin.publish.PublishPlugin
+apply plugin: VersioningPlugin
+apply plugin: AwsPublishPlugin
 
  gradlePlugin {
      plugins {
@@ -23,9 +28,13 @@ apply plugin: com.innovenso.gradle.plugin.publish.PublishPlugin
              id = 'com.innovenso.java'
              implementationClass = 'com.innovenso.gradle.plugin.java.JavaPlugin'
          }
-         publishPlugin {
+         awsPublishPlugin {
              id = 'com.innovenso.publish'
-             implementationClass = 'com.innovenso.gradle.plugin.publish.PublishPlugin'
+             implementationClass = 'com.innovenso.gradle.plugin.publish.AwsPublishPlugin'
+         }
+         ossPublishPlugin {
+             id = 'com.innovenso.publish.oss'
+             implementationClass = 'com.innovenso.gradle.plugin.publish.OpenSourcePublishPlugin'
          }
          springPlugin {
              id = 'com.innovenso.spring'
@@ -46,4 +55,14 @@ spotless {
         greclipse()
     }
 }
+
+
+
+pluginBundle {
+    website = 'https://innovenso.com'
+    vcsUrl = 'https://bitbucket.org/innovenso/innovenso-gradle-plugins/'
+    tags = ['innovenso']
+}
+
+
 
