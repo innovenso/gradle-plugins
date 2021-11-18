@@ -17,7 +17,7 @@ targetCompatibility = '1.17'
 
 apply from: 'dependencies.gradle'
 apply plugin: VersioningPlugin
-apply plugin: OpenSourcePublishPlugin
+apply plugin: AwsPublishPlugin
 
  gradlePlugin {
      plugins {
@@ -75,15 +75,3 @@ pluginBundle {
     tags = ['innovenso']
 }
 
-publishOSS {
-    projectUrl = 'https://innovenso.com'
-    scmUrl = 'scm:git:git@bitbucket.org:innovenso/innovenso-gradle-plugins.git'
-    scmDeveloperUrl = 'scm:git:git@bitbucket.org:innovenso/innovenso-gradle-plugins.git'
-    projectSourceUrl = 'https://bitbucket.org/innovenso/innovenso-gradle-plugins/'
-    license = 'GNU General Public License v3'
-    licenseUrl = 'https://www.gnu.org/licenses/gpl-3.0.txt'
-    maintainerName = 'Jurgen Lust'
-    maintainerId = 'jlust'
-    maintainerEmail = 'jurgen@innovenso.com'
-    description = 'Some very opinionated Gradle plugins for Innovenso projects'
-}
