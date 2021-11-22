@@ -43,7 +43,7 @@ class OpenSourcePublishPlugin implements Plugin<Project> {
 		}
 
 		project.signing {
-			String signingKey = config.signingKey
+			String signingKey = getSigningKey(project)
 			String signingPassword = config.signingPassword
 			useInMemoryPgpKeys(signingKey, signingPassword)
 			if (project.publishing.publications.mavenJava) {
@@ -64,13 +64,20 @@ class OpenSourcePublishPlugin implements Plugin<Project> {
 		}
 
 		project.signing {
-			String signingKey = config.signingKey
+			String signingKey = getSigningKey(project)
 			String signingPassword = config.signingPassword
 			useInMemoryPgpKeys(signingKey, signingPassword)
 			if (project.publishing.publications.pluginMaven) {
 				sign project.publishing.publications.pluginMaven
 			}
 		}
+	}
+
+	private String getSigningKey(Project project) {
+		def config = project.extensions.getByName('publishOSS')
+		final String base64SigningKey = config.signingKey
+		byte[] decodedBytes = Base64.getDecoder().decode(base64SigningKey)
+		new String(decodedBytes)
 	}
 
 	void applyPom(Project project, MavenPublication publication) {
