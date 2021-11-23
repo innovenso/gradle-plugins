@@ -76,8 +76,10 @@ class OpenSourcePublishPlugin implements Plugin<Project> {
 	private String getSigningKey(Project project) {
 		def config = project.extensions.getByName('publishOSS')
 		final String base64SigningKey = config.signingKey
-		byte[] decodedBytes = Base64.getDecoder().decode(base64SigningKey)
-		new String(decodedBytes)
+		if (base64SigningKey) {
+			byte[] decodedBytes = Base64.getDecoder().decode(base64SigningKey)
+			new String(decodedBytes)
+		} else ''
 	}
 
 	void applyPom(Project project, MavenPublication publication) {
