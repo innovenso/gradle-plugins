@@ -57,6 +57,19 @@ apply plugin: AwsPublishPlugin
              description = "Simple Docker plugin that supports VMWare vctl"
              implementationClass = 'com.innovenso.gradle.plugin.docker.DockerPlugin'
          }
+         latexPlugin {
+             id = 'com.innovenso.gradle.latex'
+             displayName = 'Innovenso Latex Plugin'
+             description = 'Runs a LaTeX build, using the local LaTeX distribution'
+             implementationClass = 'com.innovenso.gradle.plugin.latex.LatexPlugin'
+         }
+         scalaPlugin {
+             id = 'com.innovenso.gradle.scala'
+             displayName = 'Innovenso Scala Plugin'
+             description = 'Configures plugins and settings for every Innovenso Scala project'
+             implementationClass = 'com.innovenso.gradle.plugin.scala.ScalaPlugin'
+         }
+
      }
  }
 
